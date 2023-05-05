@@ -88,7 +88,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menCad.setText("Cadastro");
         menCad.setEnabled(false);
 
+        menCadArea.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.ALT_DOWN_MASK));
         menCadArea.setText("Área Tecnológica");
+        menCadArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menCadAreaActionPerformed(evt);
+            }
+        });
         menCad.add(menCadArea);
 
         menCadCurso.setText("Cursos");
@@ -213,6 +219,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menSairActionPerformed
      System.exit(0);
     }//GEN-LAST:event_menSairActionPerformed
+
+    private void menCadAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadAreaActionPerformed
+        TelaArea area = new TelaArea();
+        area.setVisible(true);
+    }//GEN-LAST:event_menCadAreaActionPerformed
 
     /**
      * @param args the command line arguments

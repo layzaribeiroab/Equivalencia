@@ -15,8 +15,14 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menCadArea">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+F3"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#xc1;rea Tecnol&#xf3;gica"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menCadAreaActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menCadCurso">
               <Properties>

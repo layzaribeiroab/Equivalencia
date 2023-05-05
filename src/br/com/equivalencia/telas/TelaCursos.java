@@ -8,7 +8,7 @@ import net.proteanit.sql.DbUtils;
 
 
 
-public class TelaArea extends javax.swing.JFrame {
+public class TelaCursos extends javax.swing.JFrame {
 
   Connection conexao = null;
   PreparedStatement pst = null;
@@ -20,19 +20,19 @@ public class TelaArea extends javax.swing.JFrame {
     
     try {
      pst = conexao.prepareStatement(sql);
-     pst.setString(1, txtNomeArea.getText());
+     pst.setString(1, txtNomeCurso.getText());
      
   // validando campos de preencimento obrigatorio
   
-            if (txtNomeArea.getText().isEmpty()) {
+            if (txtNomeCurso.getText().isEmpty()) {
                JOptionPane.showMessageDialog(null, "Campos de preenchimento obrigatorio estao em branco!");
             }else{
                 int adicionado = pst.executeUpdate();
                 
                 if (adicionado >0) {
                     JOptionPane.showMessageDialog(null, "Área Tecnologica cadastrada com sucesso");
-                    txtNomeArea.setText(null);
-                    txtNomeArea.requestFocus();
+                    txtNomeCurso.setText(null);
+                    txtNomeCurso.requestFocus();
                 }
             }
     }catch (Exception e){
@@ -46,11 +46,11 @@ public class TelaArea extends javax.swing.JFrame {
       
       try {
           pst=conexao.prepareStatement(sql);
-          pst.setString(1, txtNomeArea.getText());
-          pst.setString(2, txtIdArea.getText());
+          pst.setString(1, txtNomeCurso.getText());
+          pst.setString(2, txtIdCurso.getText());
        
           //Validacao dos campos obrigatorios
-          if (txtIdArea.getText().isEmpty() || (txtNomeArea.getText().isEmpty())) {
+          if (txtIdCurso.getText().isEmpty() || (txtNomeCurso.getText().isEmpty())) {
               JOptionPane.showMessageDialog(null, "Campos de preenchimento obrigatório em branco");
               
           } else {
@@ -58,9 +58,9 @@ public class TelaArea extends javax.swing.JFrame {
               
               if (adicionado >0){
                   JOptionPane.showMessageDialog(null, "Area Tecnologica alterada com sucesso!");
-                  txtNomeArea.requestFocus();
-                  txtNomeArea.setText(null);
-                  txtIdArea.setText(null);
+                  txtNomeCurso.requestFocus();
+                  txtNomeCurso.setText(null);
+                  txtIdCurso.setText(null);
                   btnCadastrar.setEnabled(true);
                   btnEditar.setEnabled(false);
                   btnExcluir.setEnabled(false);
@@ -76,15 +76,15 @@ public class TelaArea extends javax.swing.JFrame {
   
   // metodo de pesquisa area tecnologica no banco de dados
   
-  private void pesquisar_area(){
-      String sql = "select id_area as ID, nome_area as 'Área Tecnologica' from tb_area_tecnologica where nome_area like ?";
+  private void pesquisar_curso(){
+      String sql = "select id_curso as ID, nome_curso as 'Curso', id_area as 'ID Área Téc.' from tb_cursos where nome_curso like ?";
       
       try {
           pst = conexao.prepareStatement(sql);
-          pst.setString(1, txtPesquisarArea.getText()+"%");
+          pst.setString(1, txtPesquisarCurso.getText()+"%");
           rs = pst.executeQuery();
           
-          tblArea.setModel(DbUtils.resultSetToTableModel(rs));
+          tblCursos.setModel(DbUtils.resultSetToTableModel(rs));
           
       } catch (Exception e) {
           JOptionPane.showMessageDialog(null, e);
@@ -92,9 +92,9 @@ public class TelaArea extends javax.swing.JFrame {
   }
   
   private void setar_campos(){
-      int setar = tblArea.getSelectedRow();
-      txtIdArea.setText(tblArea.getModel().getValueAt(setar, 0).toString());
-      txtNomeArea.setText(tblArea.getModel().getValueAt(setar, 1).toString());
+      int setar = tblCursos.getSelectedRow();
+      txtIdCurso.setText(tblCursos.getModel().getValueAt(setar, 0).toString());
+      txtNomeCurso.setText(tblCursos.getModel().getValueAt(setar, 1).toString());
       btnCadastrar.setEnabled(false);
       btnEditar.setEnabled(true);
       btnExcluir.setEnabled(true);
@@ -107,15 +107,15 @@ public class TelaArea extends javax.swing.JFrame {
           String sql = "delete from tb_area_tecnologica where id_area=?";
           try {
               pst = conexao.prepareStatement(sql);
-              pst.setString(1, txtIdArea.getText());
+              pst.setString(1, txtIdCurso.getText());
               int apagado = pst.executeUpdate();
               if (apagado > 0){
                   JOptionPane.showMessageDialog(null, "Área Tecnológica excluída com sucesso!");
-                  txtIdArea.setText(null);
-                  txtNomeArea.setText(null);
+                  txtIdCurso.setText(null);
+                  txtNomeCurso.setText(null);
                   btnExcluir.setEnabled(false);
                   btnEditar.setEnabled(false);
-                  txtNomeArea.requestFocus();
+                  txtNomeCurso.requestFocus();
                   btnCadastrar.setEnabled(true);
               }
           } catch (java.sql.SQLIntegrityConstraintViolationException e) {
@@ -131,12 +131,12 @@ public class TelaArea extends javax.swing.JFrame {
   }
   
     
-    public TelaArea() {
+    public TelaCursos() {
         initComponents();
         conexao = ModuloConexao.conector();
         btnEditar.setEnabled(false);
         btnExcluir.setEnabled(false);
-        
+        pesquisar_curso();
     }
 
     /**
@@ -151,15 +151,18 @@ public class TelaArea extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtIdArea = new javax.swing.JTextField();
-        txtNomeArea = new javax.swing.JTextField();
+        txtIdCurso = new javax.swing.JTextField();
+        txtNomeCurso = new javax.swing.JTextField();
         btnCadastrar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblArea = new javax.swing.JTable();
+        tblCursos = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        txtPesquisarArea = new javax.swing.JTextField();
+        txtPesquisarCurso = new javax.swing.JTextField();
+        cboArea = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         jLabel1.setText("jLabel1");
 
@@ -167,13 +170,13 @@ public class TelaArea extends javax.swing.JFrame {
 
         jLabel2.setText("ID:");
 
-        jLabel3.setText("Nome Área:");
+        jLabel3.setText("Nome Curso:");
 
-        txtIdArea.setEnabled(false);
+        txtIdCurso.setEnabled(false);
 
-        txtNomeArea.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNomeCurso.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNomeAreaKeyPressed(evt);
+                txtNomeCursoKeyPressed(evt);
             }
         });
 
@@ -198,7 +201,7 @@ public class TelaArea extends javax.swing.JFrame {
             }
         });
 
-        tblArea.setModel(new javax.swing.table.DefaultTableModel(
+        tblCursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -215,20 +218,24 @@ public class TelaArea extends javax.swing.JFrame {
                 "ID", "Nome Área"
             }
         ));
-        tblArea.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblCursos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblAreaMouseClicked(evt);
+                tblCursosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblArea);
+        jScrollPane1.setViewportView(tblCursos);
 
         jLabel4.setText("Pesquisar:");
 
-        txtPesquisarArea.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPesquisarCurso.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPesquisarAreaKeyReleased(evt);
+                txtPesquisarCursoKeyReleased(evt);
             }
         });
+
+        jLabel5.setText("ID Area Téc.:");
+
+        jTextField1.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -238,30 +245,36 @@ public class TelaArea extends javax.swing.JFrame {
                 .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtIdCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtIdArea, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtNomeArea, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)))
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPesquisarArea))
+                        .addComponent(txtPesquisarCurso))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,25 +282,30 @@ public class TelaArea extends javax.swing.JFrame {
                 .addGap(97, 97, 97)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtIdArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtNomeArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(71, 71, 71)
+                    .addComponent(txtNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnExcluir)
                     .addComponent(btnCadastrar)
                     .addComponent(btnEditar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(txtPesquisarArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPesquisarCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -296,28 +314,28 @@ public class TelaArea extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
       adicionar ();
-      pesquisar_area();
+      pesquisar_curso();
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
-    private void txtNomeAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeAreaKeyPressed
+    private void txtNomeCursoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeCursoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER){
             adicionar();
         }
-    }//GEN-LAST:event_txtNomeAreaKeyPressed
+    }//GEN-LAST:event_txtNomeCursoKeyPressed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         alterar();
-        pesquisar_area();
+        pesquisar_curso();
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void txtPesquisarAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarAreaKeyReleased
-        pesquisar_area();
-    }//GEN-LAST:event_txtPesquisarAreaKeyReleased
+    private void txtPesquisarCursoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarCursoKeyReleased
+        pesquisar_curso();
+    }//GEN-LAST:event_txtPesquisarCursoKeyReleased
 
-    private void tblAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAreaMouseClicked
+    private void tblCursosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCursosMouseClicked
         // TODO add your handling code here:
         setar_campos();
-    }//GEN-LAST:event_tblAreaMouseClicked
+    }//GEN-LAST:event_tblCursosMouseClicked
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         excluir();
@@ -340,20 +358,21 @@ public class TelaArea extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaArea.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaCursos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaArea().setVisible(true);
+                new TelaCursos().setVisible(true);
             }
         });
     }
@@ -362,14 +381,17 @@ public class TelaArea extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JComboBox<String> cboArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblArea;
-    private javax.swing.JTextField txtIdArea;
-    private javax.swing.JTextField txtNomeArea;
-    private javax.swing.JTextField txtPesquisarArea;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblCursos;
+    private javax.swing.JTextField txtIdCurso;
+    private javax.swing.JTextField txtNomeCurso;
+    private javax.swing.JTextField txtPesquisarCurso;
     // End of variables declaration//GEN-END:variables
 }
